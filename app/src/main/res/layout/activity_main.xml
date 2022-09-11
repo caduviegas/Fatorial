@@ -34,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Digite o numero aqui"
+        android:inputType="number"
         app:layout_constraintTop_toBottomOf="@id/tv_texto"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -49,5 +50,19 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="40dp"
         android:text="Calcular"/>
+
+    <TextView
+        android:id="@+id/tv_resposta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Resposta"
+        app:layout_constraintTop_toBottomOf="@id/btn_calcular"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:layout_marginTop="40dp"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
