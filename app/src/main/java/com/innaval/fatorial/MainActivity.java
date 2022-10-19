@@ -1,6 +1,7 @@
 package com.innaval.fatorial;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,39 +11,43 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.innaval.fatorial.databinding.ActivityMainBinding;
+
 import java.math.BigInteger;
 import java.util.Locale;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
-    EditText editText;
-    TextView textView;
-    Button button;
+
+    private MainViewModel viewModel;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        bindViewModel();
+        setupObservers();
+        setupListerners();
+    }
 
-        editText = findViewById(R.id.et_calculofatorial);
-        textView = findViewById(R.id.tv_resposta);
-        button = findViewById(R.id.btn_calcular);
+    private void bindViewModel() {
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+    }
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int num = Integer.parseInt(editText.getText().toString());
-                textView.setText("" + String.format(Locale.getDefault(), "%.2f", factorial(num)));
-            }
+    private void setupObservers() {
+        viewModel.getFatorial().observe(this, resposta -> {
+            binding.tvResposta.setText(Double.toString(resposta));
         });
     }
 
-    private double factorial(double num) {
-        if (num < 2) {
-            return 1;
-        } else {
-            return num * factorial(num - 1);
-        }
+    private void setupListerners() {
+        binding.btnCalcular.setOnClickListener(v -> {
+            String numero = binding.etCalculofatorial.getText().toString();
+            Double numeroInicial = Double.parseDouble(numero);
+            viewModel.onClickButtonCalcFatorial(numeroInicial);
+        });
     }
 }
 

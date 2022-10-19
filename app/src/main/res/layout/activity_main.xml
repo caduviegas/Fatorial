@@ -33,13 +33,14 @@
         android:id="@+id/et_calculofatorial"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
         android:hint="Digite o numero aqui"
         android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@id/tv_texto"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="40dp"
-        android:gravity="center"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_texto" />
 
     <Button
         android:id="@+id/btn_calcular"
