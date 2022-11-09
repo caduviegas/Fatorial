@@ -1,25 +1,18 @@
-package com.innaval.fatorial;
+package com.innaval.fatorial
 
-import android.view.View;
+import androidx.lifecycle.ViewModel
+import com.innaval.fatorial.UseCase
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+class MainViewModel : ViewModel() {
+    private val useCase = UseCase()
+    private val factorial = MutableLiveData<Double>()
+    val fatorial: LiveData<Double>
+        get() = factorial
 
-
-
-public class MainViewModel extends ViewModel {
-
-    private UseCase useCase = new UseCase();
-    private MutableLiveData<Double> factorial = new MutableLiveData<>();
-
-
-    public LiveData<Double> getFatorial() {
-        return factorial;
-    }
-
-    public void onClickButtonCalcFatorial(double num) {
-        Double reposta = useCase.useCaseCalcFatorial(num);
-        factorial.postValue(reposta);
+    fun onClickButtonCalcFatorial(num: Double) {
+        val reposta = useCase.useCaseCalcFatorial(num)
+        factorial.postValue(reposta)
     }
 }

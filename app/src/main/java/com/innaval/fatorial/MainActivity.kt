@@ -1,74 +1,57 @@
-package com.innaval.fatorial;
+package com.innaval.fatorial
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.appcompat.app.AppCompatActivity
+import com.innaval.fatorial.MainViewModel
+import android.animation.ValueAnimator
+import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
+import android.view.animation.BounceInterpolator
+import android.animation.ValueAnimator.AnimatorUpdateListener
+import android.view.View
+import com.innaval.fatorial.databinding.ActivityMainBinding
 
-import android.animation.ValueAnimator;
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.View;
-import android.view.animation.BounceInterpolator;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.innaval.fatorial.databinding.ActivityMainBinding;
-
-import java.math.BigInteger;
-import java.util.Locale;
-
-public class MainActivity extends AppCompatActivity {
-
-
-    private MainViewModel viewModel;
-    private ActivityMainBinding binding;
-    private ValueAnimator valueAnimator;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        bindViewModel();
-        setupObservers();
-        setupListerners();
+class MainActivity : AppCompatActivity() {
+    private var viewModel: MainViewModel? = null
+    private var binding: ActivityMainBinding? = null
+    private var valueAnimator: ValueAnimator? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding!!.root)
+        bindViewModel()
+        setupObservers()
+        setupListerners()
     }
 
-    private void bindViewModel() {
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+    private fun bindViewModel() {
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-    private void setupObservers() {
-        viewModel.getFatorial().observe(this, resposta -> {
-            binding.tvResposta.setText(Double.toString(resposta));
-        });
+    private fun setupObservers() {
+        viewModel!!.fatorial.observe(this) { resposta: Double? ->
+            binding!!.tvResposta.text = resposta.toString()!!
+
+        }
     }
 
-    private void setupListerners() {
-        binding.btnCalcular.setOnClickListener(v -> {
-            String numero = binding.etCalculofatorial.getText().toString();
-            Double numeroInicial = Double.parseDouble(numero);
-            viewModel.onClickButtonCalcFatorial(numeroInicial);
-            animatorAnswer();
-            valueAnimator.start();
-        });
+    private fun setupListerners() {
+        binding!!.btnCalcular.setOnClickListener { v: View? ->
+            val numero = binding!!.etCalculofatorial.text.toString()
+            val numeroInicial = numero.toDouble()
+            viewModel!!.onClickButtonCalcFatorial(numeroInicial)
+           // animatorAnswer()
+           // valueAnimator!!.start()
+        }
     }
 
-    private void animatorAnswer() {
-        valueAnimator = ValueAnimator.ofInt(0, 20, -20, 18, -18, 15, -15, 6, -6, 0);
-        valueAnimator.setDuration(2000);
-        valueAnimator.setInterpolator(new BounceInterpolator());
-        valueAnimator.addUpdateListener(
-                new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        int value = (int) animation.getAnimatedValue();
-                        binding.btnCalcular.setTranslationX(value);
-                        binding.btnCalcular.setMinWidth(value * 25);
-                    }
-                }
-        );
-    }
+    /*private fun animatorAnswer() {
+        val valueAnimator = ValueAnimator.ofInt(0, 20, -20, 18, -18, 15, -15, 6, -6, 0)
+        val duration = valueAnimator.setDuration(2000)
+        valueAnimator.setInterpolator(BounceInterpolator())
+        valueAnimator.addUpdateListener { animation ->
+            val value = animation.animatedValue as Int
+            binding!!.btnCalcular.translationX = value.toFloat()
+            binding!!.btnCalcular.minWidth = value * 25
+        }
+    }*/
 }
-
